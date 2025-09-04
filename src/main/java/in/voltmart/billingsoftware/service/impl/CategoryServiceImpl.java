@@ -20,20 +20,29 @@ public class ServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public CategoryResponse addCategory(CategoryRequest request) {
+    public CategoryResponse add(CategoryRequest request) {
         CategoryEntity newCategory = convertToEntity(request);
         newCategory = categoryRepository.save(newCategory);
         return convertToResponse(newCategory);
     }
 
+
+
     @Override
-    public List<CategoryResponse> readCategory() {
+    public List<CategoryResponse> read() {
       return  categoryRepository.findAll()
               .stream()
               .map(categoryEntity -> convertToResponse(categoryEntity))
               .collect(Collectors.toList());
 
 
+    }
+
+    @Override
+    public void delete(String categoryId) {
+        CategoryEntity existingCategory = categoryRepository.findByCategoryId(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found: "+categoryId));
+        categoryRepository.delete(existingCategory);
     }
 
     private CategoryResponse convertToResponse(CategoryEntity newCategory) {
