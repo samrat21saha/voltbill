@@ -1,15 +1,15 @@
 package in.voltmart.billingsoftware.io;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Data
 public class CategoryRequest {
 
     private String name;
     private String description;
     private String bgColor;
-
 }

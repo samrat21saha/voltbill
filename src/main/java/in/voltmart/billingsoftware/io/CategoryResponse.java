@@ -1,14 +1,14 @@
 package in.voltmart.billingsoftware.io;
 
-
-
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Data
 public class CategoryResponse {
 
     private String categoryId;
