@@ -3,6 +3,7 @@ package in.voltmart.billingsoftware.controller;
 import in.voltmart.billingsoftware.io.AuthRequest;
 import in.voltmart.billingsoftware.io.AuthResponse;
 import in.voltmart.billingsoftware.service.impl.AppUserDetailsService;
+import in.voltmart.billingsoftware.service.impl.UserServiceImpl;
 import in.voltmart.billingsoftware.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final AppUserDetailsService appUserDetailsService;
+
+    private final UserServiceImpl userService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
@@ -34,8 +37,9 @@ public class AuthController {
 
         final UserDetails userDetails = appUserDetailsService.loadUserByUsername(request.getEmail());
         final String token = jwtUtil.generateToken(userDetails);
-
-        return new AuthResponse(token);
+        final String jwtToken = jwtUtil.generateToken(userDetails);
+        String role = userService.getUserRole(request.getEmail());
+        return  new AuthResponse(request.getEmail(), role, jwtToken);
     }
 
     private void authenticate(String email, String password) throws Exception {
